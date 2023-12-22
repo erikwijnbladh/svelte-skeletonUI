@@ -28,6 +28,9 @@ export default {
 				rock: '#B8A038',
 				ghost: '#705898',
 				dragon: '#7038F8'
+			},
+			minWidth: {
+				'2xl': '42rem'
 			}
 		}
 	},

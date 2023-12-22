@@ -55,7 +55,10 @@
 	});
 </script>
 
-<div class="card max-w-2xl mx-auto variant-ghost-surface" transition:fade={{ duration: 200 }}>
+<div
+	class="card min-w-2xl mx-auto max-w-2xl variant-filled-tertiary select-none text-white"
+	transition:fade={{ duration: 200 }}
+>
 	<header class="card-header flex flex-col items-center">
 		{#if isLoading}
 			<div class="placeholder-circle w-48 animate-pulse" />
@@ -72,9 +75,9 @@
 			</h6>
 			<div class="flex flex-row gap-3 pt-4">
 				{#each pokemon.types as type}
-					<p class="{typeToBgClass(type)} uppercase text-xs px-1 rounded-lg font-semibold">
+					<h6 class="{typeToBgClass(type)} uppercase text-xs px-1 rounded-lg font-semibold">
 						{type.type.name}
-					</p>
+					</h6>
 				{/each}
 			</div>
 		{/if}
@@ -103,7 +106,9 @@
 						<h6 class="capitalize">Entry</h6>
 					</svelte:fragment>
 					<svelte:fragment slot="content">
-						{pokemon.flavor_text}
+						<h6>
+							{pokemon.flavor_text}
+						</h6>
 					</svelte:fragment>
 				</AccordionItem>
 				<AccordionItem>

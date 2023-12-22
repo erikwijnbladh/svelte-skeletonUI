@@ -8,6 +8,9 @@
 		AppRailAnchor,
 		LightSwitch
 	} from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
+
+	initializeStores();
 	let currentTile: number = 0;
 </script>
 
