@@ -18,10 +18,10 @@
 <AppShell scrollbarGutter="stable">
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
-		<AppBar>
+		<AppBar class="border-b border-tertiary-800">
 			<svelte:fragment slot="lead">
 				<a class="btn btn-sm variant-ghost-surface" href="/">
-					<strong class="text-xl">R/B/Y Pokedex</strong>
+					<strong class="text-xl">Home</strong>
 				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
@@ -70,14 +70,14 @@
 	<!-- </AppRail> -->
 	<!-- </svelte:fragment> -->
 	<!-- Page Route Content -->
-	<div class="max-w-4xl mx-auto py-20">
+	<div class="max-w-4xl mx-auto py-5 md:py-20">
 		<slot />
 	</div>
-	<!-- <svelte:fragment slot="footer">
-		<div class="flex flex-row justify-center">
+	<svelte:fragment slot="footer">
+		<div class="flex flex-row justify-center border-t border-tertiary-800">
 			<p>Built width</p>
 			<p>1</p>
 			<p>1</p>
 		</div>
-	</svelte:fragment> -->
+	</svelte:fragment>
 </AppShell>

@@ -16,6 +16,5 @@ const fetchPokemon = async () => {
 		};
 	});
 	pokemons.set(loadedPokemon);
-	console.log(pokemons);
 };
 fetchPokemon();

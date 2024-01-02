@@ -3,6 +3,21 @@
 	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+
+	function getPageTitle() {
+        if (pokemon.name) {
+            return pokemon.name;
+        }
+        if ($page.state.selected.pokemon.name) {
+            return $page.state.selected.pokemon.name;
+        }
+				if ($page.params) {
+					return "SkeletonUI Pokedex";	
+				}
+        return "SkeletonUI Pokedex";
+    }
+	$: pageTitle = getPageTitle();
 
 	export let data;
 
@@ -51,10 +66,12 @@
 	onMount(() => {
 		setTimeout(() => {
 			isLoading = false;
-		}, 1500); // Set delay as 2000 milliseconds or 2 seconds
+		}, 1500);
 	});
 </script>
-
+<svelte:head>
+	<title>{pageTitle}</title>
+</svelte:head>
 <div
 	class="card min-w-2xl mx-auto max-w-2xl variant-filled-tertiary select-none text-white"
 	transition:fade={{ duration: 200 }}
