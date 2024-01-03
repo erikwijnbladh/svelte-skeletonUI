@@ -6,17 +6,17 @@
 	import { page } from '$app/stores';
 
 	function getPageTitle() {
-        if (pokemon.name) {
-            return pokemon.name;
-        }
-        if ($page.state.selected.pokemon.name) {
-            return $page.state.selected.pokemon.name;
-        }
-				if ($page.params) {
-					return "SkeletonUI Pokedex";	
-				}
-        return "SkeletonUI Pokedex";
-    }
+		if (pokemon.name) {
+			return 'SkeletonUI Pokedex - ' + pokemon.name;
+		}
+		if ($page.state.selected.pokemon.name) {
+			return 'SkeletonUI Pokedex -' + $page.state.selected.pokemon.name;
+		}
+		if ($page.params) {
+			return 'SkeletonUI Pokedex';
+		}
+		return 'SkeletonUI Pokedex';
+	}
 	$: pageTitle = getPageTitle();
 
 	export let data;
@@ -69,16 +69,17 @@
 		}, 1500);
 	});
 </script>
+
 <svelte:head>
 	<title>{pageTitle}</title>
 </svelte:head>
 <div
-	class="card min-w-2xl mx-auto max-w-2xl variant-filled-tertiary select-none text-white"
+	class="card mx-auto min-w-xs max-w-xs sm:max-w-2xl sm:min-w-2xl variant-outline-tertiary select-none"
 	transition:fade={{ duration: 200 }}
 >
 	<header class="card-header flex flex-col items-center">
 		{#if isLoading}
-			<div class="placeholder-circle w-48 animate-pulse" />
+			<div class="placeholder-circle w-48 mx-12 animate-pulse" />
 		{:else}
 			<Avatar
 				src={sprite}
@@ -123,14 +124,20 @@
 						<h6 class="capitalize">Entry</h6>
 					</svelte:fragment>
 					<svelte:fragment slot="content">
-						<h6>
+						<p class="text-sm">
 							{pokemon.flavor_text}
-						</h6>
+						</p>
 					</svelte:fragment>
 				</AccordionItem>
 				<AccordionItem>
-					<svelte:fragment slot="summary">Accordion 2</svelte:fragment>
-					<svelte:fragment slot="content">(content)</svelte:fragment>
+					<svelte:fragment slot="summary">
+						<h6 class="capitalize">Statistics</h6>
+					</svelte:fragment>
+					<svelte:fragment slot="content">
+						<p class="text-sm">
+							Height: {pokemon.height / 10}m / Weight: {pokemon.weight / 10}kg
+						</p>
+					</svelte:fragment>
 				</AccordionItem>
 				<!-- ... -->
 			</Accordion>
@@ -141,11 +148,11 @@
 			<div class="placeholder animate-pulse" />
 		</footer>
 	{:else}
-		<footer class="card-footer">
+		<!-- <footer class="card-footer">
 			<div class="flex flex-row justify-between">
 				<p>1</p>
 				<p>2</p>
 			</div>
-		</footer>
+		</footer> -->
 	{/if}
 </div>

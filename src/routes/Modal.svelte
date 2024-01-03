@@ -1,6 +1,7 @@
 <!-- Modal.svelte -->
 <script>
 	import { createEventDispatcher } from 'svelte';
+	import CloseIcon from '../components/icons/+close.svelte';
 	export let show = false;
 	const dispatch = createEventDispatcher();
 	export function close() {
@@ -12,11 +13,10 @@
 {#if show}
 	<div class="modal-overlay" on:click={close}>
 		<div class="relative" on:click|stopPropagation>
-			<button
-				type="button"
-				class="btn-md rounded variant-filled-tertiary absolute right-0"
-				on:click={close}>×</button
+			<button type="button" class="rounded bg-initial absolute right-2 top-2" on:click={close}
+				><CloseIcon /></button
 			>
+
 			<slot />
 		</div>
 	</div>
