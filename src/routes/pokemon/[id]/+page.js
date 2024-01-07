@@ -8,6 +8,7 @@ export async function load({ fetch, params }) {
 	const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
 	const pokemonRes = await fetch(pokemonUrl);
 	let pokemon = await pokemonRes.json();
+	console.log(pokemon);
 
 	// Fetching species data
 	const speciesData = await getSpeciesData(fetch, pokemon);
@@ -17,6 +18,8 @@ export async function load({ fetch, params }) {
 
 	// Extracting flavor text
 	const flavorText = await getFlavorText(fetch, pokemon.species.url);
+	// Add flavor text to the pokemon object
+	pokemon.flavor_text = flavorText;
 
 	// Fetching evolution chain data
 	if (speciesData.evolution_chain && speciesData.evolution_chain.url) {
@@ -31,9 +34,5 @@ export async function load({ fetch, params }) {
 		pokemon.prevEvolution = prevEvolution;
 		pokemon.nextEvolutions = nextEvolutions;
 	}
-
-	// Add flavor text to the pokemon object
-	pokemon.flavor_text = flavorText;
-
 	return { pokemon };
 }

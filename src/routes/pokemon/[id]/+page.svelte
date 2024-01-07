@@ -15,6 +15,12 @@
 	$: pokemon = data.pokemon;
 	$: sprite = pokemon ? pokemon.sprites.other['official-artwork']['front_default'] : '';
 
+	// Compute the types to display: use past_types if available, otherwise use current types
+	$: pokemonTypes =
+		pokemon.past_types && pokemon.past_types.length > 0
+			? pokemon.past_types[0].types // Assuming you want to display the types from the first entry in past_types
+			: pokemon.types;
+
 	function typeToBgClass(type) {
 		switch (type.type.name) {
 			case 'normal':
@@ -64,10 +70,13 @@
 <svelte:head>
 	<title>{pageTitle}</title>
 </svelte:head>
-<div class="card ml-2 variant-outline-tertiary select-none" transition:fade={{ duration: 200 }}>
+<div
+	class="card ml-1 md:mx-auto min-w-full max-w-full md:min-w-3xl md:max-w-3xl variant-outline-tertiary select-none"
+	transition:fade={{ duration: 200 }}
+>
 	<header class="card-header flex flex-col items-center">
 		{#if isLoading}
-			<div class="placeholder-circle w-48 mx-24 animate-pulse" />
+			<div class="placeholder-circle w-48 mx-16 md:mx-24 animate-pulse" />
 		{:else}
 			<Avatar
 				src={sprite}
@@ -80,7 +89,7 @@
 				{pokemon.name}
 			</h6>
 			<div class="flex flex-row gap-3 pt-4">
-				{#each pokemon.types as type}
+				{#each pokemonTypes as type}
 					<h6 class="{typeToBgClass(type)} uppercase text-xs px-1 rounded-lg font-semibold">
 						{type.type.name}
 					</h6>
@@ -106,7 +115,7 @@
 				<!-- ... -->
 			</Accordion>
 		{:else}
-			<Accordion>
+			<Accordion autocollapse>
 				<AccordionItem open>
 					<svelte:fragment slot="summary">
 						<h6 class="capitalize">Entry</h6>

@@ -62,8 +62,9 @@ export function mapEvolutions(evolutionChainData, currentPokemonId) {
 					(evo) => extractIdFromUrl(evo.species.url) === currentPokemonId
 				);
 
-				if (evolutionDetail) {
+				if (evolutionDetail && extractIdFromUrl(cameFrom.species.url) <= 151) {
 					const prevEvolutionMethod = getEvolutionMethod(evolutionDetail.evolution_details);
+
 					prevEvolution = {
 						name: cameFrom.species.name,
 						id: extractIdFromUrl(cameFrom.species.url),
