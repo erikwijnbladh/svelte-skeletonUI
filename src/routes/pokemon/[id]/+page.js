@@ -1,24 +1,39 @@
+// +page.js
+import { mapEvolutions } from '../../../stores/helpers/evolutionHelper';
+import { getFlavorText } from '../../../stores/helpers/flavorTextHelper';
+import { getSpeciesData } from '../../../stores/helpers/speciesHelper';
+
 export async function load({ fetch, params }) {
-	const id = params.id;
-	const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${id}`;
+	const pokemonId = params.id;
+	const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
 	const pokemonRes = await fetch(pokemonUrl);
-	let pokeman = await pokemonRes.json();
+	let pokemon = await pokemonRes.json();
 
 	// Fetching species data
-	const speciesUrl = pokeman.species.url;
-	const speciesRes = await fetch(speciesUrl);
-	const speciesData = await speciesRes.json();
+	const speciesData = await getSpeciesData(fetch, pokemon);
+	if (!speciesData) {
+		return { pokemon: null }; // Handle this case appropriately in your application
+	}
 
-	// Extracting the flavor text
-	// This example gets the English flavor text from the latest version
-	const flavorTextEntries = speciesData.flavor_text_entries;
-	const englishFlavorText = flavorTextEntries.find(
-		(entry) => entry.language.name === 'en' && entry.version.name === 'red'
-	); // Change 'shield' as needed
+	// Extracting flavor text
+	const flavorText = await getFlavorText(fetch, pokemon.species.url);
 
-	// Mapping flavor text to pokeman object
-	pokeman.flavor_text = englishFlavorText
-		? englishFlavorText.flavor_text.replace(/[\n\f]/g, ' ')
-		: '';
-	return { pokeman };
+	// Fetching evolution chain data
+	if (speciesData.evolution_chain && speciesData.evolution_chain.url) {
+		const evolutionChainUrl = speciesData.evolution_chain.url;
+		const evolutionChainRes = await fetch(evolutionChainUrl);
+		const evolutionChainData = await evolutionChainRes.json();
+
+		// Using the imported function to map evolutions
+		const { prevEvolution, nextEvolutions } = mapEvolutions(evolutionChainData, pokemonId);
+
+		// Add evolution data to the pokemon object
+		pokemon.prevEvolution = prevEvolution;
+		pokemon.nextEvolutions = nextEvolutions;
+	}
+
+	// Add flavor text to the pokemon object
+	pokemon.flavor_text = flavorText;
+
+	return { pokemon };
 }
