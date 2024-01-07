@@ -12,7 +12,7 @@
 
 {#if show}
 	<div class="modal-overlay" on:click={close}>
-		<div class="relative" on:click|stopPropagation>
+		<div class="relative mr-2" on:click|stopPropagation>
 			<button type="button" class="rounded bg-initial absolute right-2 top-2" on:click={close}
 				><CloseIcon /></button
 			>
@@ -34,9 +34,4 @@
 		justify-content: center;
 		align-items: center;
 	}
-	/* .modal-content {
-		padding: 20px;
-		border-radius: 5px;
-		position: relative;
-	} */
 </style>

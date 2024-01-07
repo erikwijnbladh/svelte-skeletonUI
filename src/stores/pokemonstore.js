@@ -10,7 +10,7 @@ const fetchPokemon = async () => {
 		return {
 			name: data.name,
 			id: index + 1,
-			sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+			sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${
 				index + 1
 			}.png`
 		};

@@ -26,7 +26,7 @@
 	/>
 </svelte:head>
 <div class="space-y-6">
-	<div class="mx-4 md:mx-0">
+	<div class="mx-7 md:mx-10">
 		<label class="label">
 			<span>Search Pokémon</span>
 			<div class="relative">
@@ -55,9 +55,9 @@
 				<div class="placeholder-circle w-48 animate-pulse" />
 			{:else}
 				<a
-					class="card card-hover variant-ghost-surface mx-auto px-4 md:px-10 select-none"
+					class="card card-hover w-36 sm:w-48 variant-ghost-surface mx-auto px-4 md:px-10 select-none"
 					href="/pokemon/{pokemon.id}"
-					data-sveltekit-preload-data="hover"
+					data-sveltekit-preload-data="tap"
 					on:click={async (e) => {
 						if (e.metaKey || e.ctrlKey) return;
 
