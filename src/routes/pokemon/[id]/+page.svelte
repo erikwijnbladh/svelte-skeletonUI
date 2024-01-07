@@ -4,25 +4,16 @@
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { preloadData, pushState, goto } from '$app/navigation';
+	import FaAngleLeft from 'svelte-icons/fa/FaAngleLeft.svelte';
+	import FaAngleRight from 'svelte-icons/fa/FaAngleRight.svelte';
 
-	function getPageTitle() {
-		if (pokemon.name) {
-			return 'SkeletonUI Pokedex - ' + pokemon.name;
-		}
-		if ($page.state.selected.pokemon.name) {
-			return 'SkeletonUI Pokedex -' + $page.state.selected.pokemon.name;
-		}
-		if ($page.params) {
-			return 'SkeletonUI Pokedex';
-		}
-		return 'SkeletonUI Pokedex';
-	}
-	$: pageTitle = getPageTitle();
+	$: pageTitle = pokemon ? 'SkeletonUI Pokedex - ' + pokemon.name : 'SkeletonUI Pokedex';
 
 	export let data;
 
-	const pokemon = data.pokeman;
-	const sprite = pokemon.sprites.other['official-artwork']['front_default'];
+	$: pokemon = data.pokemon;
+	$: sprite = pokemon ? pokemon.sprites.other['official-artwork']['front_default'] : '';
 
 	function typeToBgClass(type) {
 		switch (type.type.name) {
@@ -73,13 +64,10 @@
 <svelte:head>
 	<title>{pageTitle}</title>
 </svelte:head>
-<div
-	class="card mx-auto min-w-xs max-w-xs sm:max-w-2xl sm:min-w-2xl variant-outline-tertiary select-none"
-	transition:fade={{ duration: 200 }}
->
+<div class="card ml-2 variant-outline-tertiary select-none" transition:fade={{ duration: 200 }}>
 	<header class="card-header flex flex-col items-center">
 		{#if isLoading}
-			<div class="placeholder-circle w-48 mx-12 animate-pulse" />
+			<div class="placeholder-circle w-48 mx-24 animate-pulse" />
 		{:else}
 			<Avatar
 				src={sprite}
@@ -148,11 +136,94 @@
 			<div class="placeholder animate-pulse" />
 		</footer>
 	{:else}
-		<!-- <footer class="card-footer">
-			<div class="flex flex-row justify-between">
-				<p>1</p>
-				<p>2</p>
+		<footer class="card-footer">
+			<div
+				class={pokemon.nextEvolutions.length >= 1 && pokemon.prevEvolution
+					? 'grid grid-cols-2 gap-2 sm:gap-12'
+					: 'flex flex-row justify-center'}
+			>
+				{#if pokemon.prevEvolution}
+					<button type="button" class="btn btn-sm variant-ringed-secondary">
+						<span class="h-4">
+							<FaAngleLeft />
+						</span>
+						<a class="hidden sm:flex" href="/pokemon/{pokemon.prevEvolution.id}">
+							{#if pokemon.prevEvolution.method == 'level-up'}
+								<p>
+									Evolves from
+									<span class="capitalize">{pokemon.prevEvolution.name} </span>
+									at
+									{pokemon.prevEvolution.details}
+								</p>
+							{:else if pokemon.prevEvolution.method == 'use-item'}
+								<p>
+									Evolves from
+									<span class="capitalize">{pokemon.prevEvolution.name} </span>
+									via
+									{pokemon.prevEvolution.details}
+								</p>
+							{:else}
+								<p>
+									Evolves into
+									<span class="capitalize">{pokemon.prevEvolution.name} </span>
+									via
+									{pokemon.prevEvolution.evolutionMethod.details}
+								</p>
+							{/if}
+						</a>
+						<a
+							class="flex text-xs font-semibold sm:hidden"
+							href="/pokemon/{pokemon.prevEvolution.id}"
+						>
+							<p>
+								Evolves from
+								<span class="capitalize"> {pokemon.prevEvolution.name}</span>
+							</p>
+						</a>
+					</button>
+				{/if}
+				{#if pokemon.nextEvolutions}
+					<div class="flex flex-col gap-2">
+						{#each pokemon.nextEvolutions as evolution}
+							<button type="button" class="btn btn-sm variant-ringed-secondary">
+								<a class="hidden sm:flex" href="/pokemon/{evolution.id}">
+									{#if evolution.evolutionMethod.method == 'level-up'}
+										<p>
+											Evolves into
+											<span class="capitalize">{evolution.name} </span>
+											at
+											{evolution.evolutionMethod.details}
+										</p>
+									{:else if evolution.evolutionMethod.method == 'use-item'}
+										<p>
+											Evolves into
+											<span class="capitalize">{evolution.name} </span>
+											by
+											{evolution.evolutionMethod.details}
+										</p>
+									{:else}
+										<p>
+											Evolves into
+											<span class="capitalize">{evolution.name} </span>
+											via
+											{evolution.evolutionMethod.details}
+										</p>
+									{/if}
+								</a>
+								<a class="flex text-xs sm:hidden" href="/pokemon/{evolution.id}">
+									<p>
+										Evolves into
+										<span class="capitalize">{evolution.name} </span>
+									</p>
+								</a>
+								<span class="h-4">
+									<FaAngleRight />
+								</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
 			</div>
-		</footer> -->
+		</footer>
 	{/if}
 </div>
