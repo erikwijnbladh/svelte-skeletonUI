@@ -30,7 +30,8 @@ export default {
 				dragon: '#7038F8'
 			},
 			minWidth: {
-				'2xl': '42rem'
+				'2xl': '42rem',
+				'3xl': '48rem'
 			}
 		}
 	},
