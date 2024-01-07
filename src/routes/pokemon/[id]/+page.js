@@ -8,7 +8,6 @@ export async function load({ fetch, params }) {
 	const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
 	const pokemonRes = await fetch(pokemonUrl);
 	let pokemon = await pokemonRes.json();
-	console.log(pokemon);
 
 	// Fetching species data
 	const speciesData = await getSpeciesData(fetch, pokemon);

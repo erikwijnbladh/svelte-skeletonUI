@@ -16,7 +16,6 @@
 			<button type="button" class="rounded bg-initial absolute right-2 top-2" on:click={close}
 				><CloseIcon /></button
 			>
-
 			<slot />
 		</div>
 	</div>

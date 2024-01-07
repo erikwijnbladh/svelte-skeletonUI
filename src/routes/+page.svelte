@@ -16,6 +16,12 @@
 	function clearSearch() {
 		searchQuery = '';
 	}
+
+	$: if ($page.state.pokemon) {
+		showModal = true;
+	} else {
+		showModal = false;
+	}
 </script>
 
 <svelte:head>
@@ -67,8 +73,7 @@
 						const result = await preloadData(href);
 
 						if (result.type === 'loaded' && result.status === 200) {
-							pushState(href, { selected: result.data });
-							showModal = true;
+							pushState(href, { pokemon: result.data });
 						} else {
 							goto(href); // fallback to normal navigation on error
 						}
@@ -84,13 +89,11 @@
 			{/if}
 		{/each}
 	</section>
-	{#if $page.state.selected}
-		<div transition:fade={{ duration: 200 }}>
-			<Modal bind:show={showModal} on:closeModal={() => history.back()}>
-				<PokemonPage data={$page.state.selected} />
-			</Modal>
-		</div>
-	{/if}
+	<div>
+		<Modal bind:show={showModal} on:closeModal={() => history.back()}>
+			<PokemonPage data={$page.state.pokemon} />
+		</Modal>
+	</div>
 </div>
 
 <style lang="postcss">
